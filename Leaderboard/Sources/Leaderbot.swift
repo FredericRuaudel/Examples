@@ -92,7 +92,11 @@ class Leaderbot {
         let thingRegex = try? NSRegularExpression(pattern: expression, options: [])
         let things = thingRegex?.matches(in: text, options: [], range: NSMakeRange(0, text.utf16.count)) ?? []
         for match in things {
-            let value = (text as NSString).substring(with: match.rangeAt(1))
+            #if os(Linux)
+            let value = text.substring(with: text.range(from: match.range(at: 1))!)
+            #else
+            let value = text.substring(with: text.range(from: match.rangeAt(1))!)
+            #endif
             if leaderboards[teamID]?.scores[value] == nil { leaderboards[teamID]?.scores[value] = 0 }
             switch trigger {
             case .plusPlus:
@@ -167,5 +171,17 @@ extension String {
             return false
         }
         return self.contains(str)
+    }
+}
+
+extension String {
+    func range(from nsRange: NSRange) -> Range<String.Index>? {
+        guard
+            let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
+            let to16 = utf16.index(from16, offsetBy: nsRange.length, limitedBy: utf16.endIndex),
+            let from = from16.samePosition(in: self),
+            let to = to16.samePosition(in: self)
+            else { return nil }
+        return from ..< to
     }
 }
