@@ -132,9 +132,9 @@ class Leaderbot {
         guard let teamID = client.team?.id, let leaderboard = leaderboards[teamID] else {
             return nil
         }
-        let 💯 = AttachmentField(title: "💯", value: swapIDsForNames(client, string: topItems(leaderboard)), short: true)
-        let 💩 = AttachmentField(title: "💩", value: swapIDsForNames(client, string: bottomItems(leaderboard)), short: true)
-        return Attachment(fallback: "Leaderboard", title: "Leaderboard", colorHex: AttachmentColor.good.rawValue, text: "", fields: [💯, 💩])
+        let top = AttachmentField(title: ":100:", value: swapIDsForNames(client, string: topItems(leaderboard)), short: true)
+        let bottom = AttachmentField(title: ":poop:", value: swapIDsForNames(client, string: bottomItems(leaderboard)), short: true)
+        return Attachment(fallback: "Leaderboard", title: "Leaderboard", colorHex: AttachmentColor.good.rawValue, text: "", fields: [top, bottom])
     }
     
     private func topItems(_ leaderboard: Leaderboard) -> String {
