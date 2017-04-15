@@ -17,3 +17,16 @@ let bot = Leaderbot(apiToken: "xoxb-SLACK_BOT_TOKEN")
 ```
 
 It adds a point for every `@user++` or `thing++`, subtracts a point for every `@user--` or `thing--`, and shows a leaderboard when asked `@botname leaderboard`.
+
+## Robot-or-Not Bot
+A bot that renders verdicts on if something is a [robot or not](https://www.theincomparable.com/robot/).
+
+To configure it, enter your bot’s API token in `main.swift`:
+
+```swift
+let slackbot = RobotOrNotBot(token: "xoxb-SLACK_API_TOKEN")
+```
+
+It renders a robot or not verdict when asked `@bot THING`.
+
+[Step By Step Tutorial](https://medium.com/@pvzig/building-slack-bots-in-swift-b99e243e444c)
