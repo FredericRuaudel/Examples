@@ -57,6 +57,14 @@ class Leaderbot {
         }
     }
     
+    init(clientID: String, clientSecret: String) {
+        let oauthConfig = OAuthConfig(clientID: clientID, clientSecret: clientSecret)
+        slackkit.addServer(oauth: oauthConfig)
+        slackkit.notificationForEvent(.message) { (event, client) in
+            self.listen(client, message: event.message)
+        }
+    }
+    
     // MARK: Leaderboard Internal Logic
     private func listen(_ client: Client?, message: Message?) {
         guard let message = message, let text = message.text, let client = client else {
