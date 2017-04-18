@@ -94,6 +94,22 @@ class RobotOrNotBot {
         }
     }
     
+    init(clientID: String, clientSecret: String) {
+        bot = SlackKit()
+        let oauthConfig = OAuthConfig(clientID: clientID, clientSecret: clientSecret)
+        bot.addServer(oauth: oauthConfig)
+        bot.notificationForEvent(.message) { [weak self] (event, client) in
+            guard
+                let message = event.message,
+                let id = client?.authenticatedUser?.id,
+                message.text?.contains(id) == true
+            else {
+                return
+            }
+            self?.handleMessage(message)
+        }
+    }
+    
     // MARK: Bot logic
     private func handleMessage(_ message: Message) {
         if let text = message.text?.lowercased(), let channel = message.channel {
@@ -112,5 +128,8 @@ class RobotOrNotBot {
     }
 }
 
+// With API token
 let slackbot = RobotOrNotBot(token: "xoxb-SLACK_API_TOKEN")
+// With OAuth
+// let slackbot = RobotOrNotBot(clientID: "CLIENT_ID", clientSecret: "CLIENT_SECRET")
 RunLoop.main.run()

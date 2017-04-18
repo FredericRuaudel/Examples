@@ -52,16 +52,16 @@ class Leaderbot {
     init(apiToken: String) {
         slackkit.addWebAPIAccessWithToken(apiToken)
         slackkit.addRTMBotWithAPIToken(apiToken)
-        slackkit.notificationForEvent(.message) { (event, client) in
-            self.listen(client, message: event.message)
+        slackkit.notificationForEvent(.message) { [weak self] (event, client) in
+            self?.listen(client, message: event.message)
         }
     }
     
     init(clientID: String, clientSecret: String) {
         let oauthConfig = OAuthConfig(clientID: clientID, clientSecret: clientSecret)
         slackkit.addServer(oauth: oauthConfig)
-        slackkit.notificationForEvent(.message) { (event, client) in
-            self.listen(client, message: event.message)
+        slackkit.notificationForEvent(.message) { [weak self] (event, client) in
+            self?.listen(client, message: event.message)
         }
     }
     
