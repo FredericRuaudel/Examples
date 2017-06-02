@@ -97,11 +97,7 @@ class Leaderbot {
     }
     
     func searchTextWithExpression(_ expression: String, text: String, trigger: Trigger, teamID: String) {
-        #if os(Linux)
-        let thingRegex = try? RegularExpression(pattern: expression, options: [])
-        #else
         let thingRegex = try? NSRegularExpression(pattern: expression, options: [])
-        #endif
         let things = thingRegex?.matches(in: text, options: [], range: NSMakeRange(0, text.utf16.count)) ?? []
         for match in things {
             #if os(Linux)
